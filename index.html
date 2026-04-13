@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listas de Asistencia — STPS Guanajuato</title>
+<style>
+:root{
+  --blue:#185FA5;--blue-bg:#E6F1FB;--blue-t:#0C447C;
+  --green:#3B6D11;--green-bg:#EAF3DE;--green-t:#27500A;
+  --red:#E24B4A;--red-bg:#FCEBEB;--red-t:#A32D2D;
+  --amber-bg:#FAEEDA;--amber-t:#854F0B;--amber:#BA7517;
+  --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.18);
+  --text:#1a1a1a;--text2:#5F5E5A;--text3:#888780;
+  --bg:#fff;--bg2:#F8F7F4;--bg3:#F1EFE8;
+  --r:8px;--rl:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 0 0 .5px rgba(0,0,0,.06);
+}
+@media(prefers-color-scheme:dark){:root{
+  --border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.18);
+  --text:#F1EFE8;--text2:#B4B2A9;--text3:#888780;
+  --bg:#1C1C1A;--bg2:#242422;--bg3:#2C2C2A;
+  --blue-bg:#0C447C;--blue-t:#B5D4F4;
+  --green-bg:#085041;--green-t:#9FE1CB;
+  --red-bg:#501313;--red-t:#F09595;
+  --amber-bg:#412402;--amber-t:#FAC775;
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:var(--text);background:var(--bg2);min-height:100vh}
+
+/* TOPBAR */
+.topbar{background:var(--bg);border-bottom:.5px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);height:52px}
+.tlogo{width:34px;height:34px;border-radius:var(--r);background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:.5px solid var(--border);margin-right:12px}
+.ttitle{flex:1}
+.ttitle h1{font-size:14px;font-weight:600}
+.ttitle p{font-size:11px;color:var(--text3)}
+.tnav{display:flex;gap:2px}
+.tnav button{padding:7px 12px;border-radius:var(--r);border:.5px solid transparent;background:transparent;color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;transition:background .15s,color .15s}
+.tnav button:hover,.tnav button.on{background:var(--blue-bg);color:var(--blue-t);border-color:var(--blue)}
+
+/* LAYOUT */
+.page{max-width:860px;margin:0 auto;padding:20px 16px 80px;display:none}
+.page.on{display:block}
+
+/* CARDS */
+.card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.stitle{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;padding-bottom:9px;border-bottom:.5px solid var(--border);display:flex;align-items:center;gap:8px}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.fa{grid-column:1/-1}
+
+/* FIELDS */
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:11px;font-weight:500;color:var(--text2)}
+.f input,.f select,.f textarea{padding:8px 11px;font-size:13px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--text);font-family:inherit;width:100%;transition:border-color .15s,box-shadow .15s}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.f textarea{resize:vertical;min-height:58px}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s,transform .1s,background .15s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.bi{border:.5px solid var(--blue)!important;background:var(--blue-bg);color:var(--blue-t)}
+.bi:hover{opacity:.8}
+.bs{border:.5px solid var(--green)!important;background:var(--green-bg);color:var(--green-t)}
+.bs:hover{opacity:.8}
+.br{border:.5px solid var(--red)!important;background:var(--red-bg);color:var(--red-t)}
+.br:hover{opacity:.8}
+.ba{border:.5px solid var(--amber)!important;background:var(--amber-bg);color:var(--amber-t)}
+.ba:hover{opacity:.8}
+.bg2b{border:.5px solid var(--border2)!important;background:transparent;color:var(--text)}
+.bg2b:hover{background:var(--bg2)}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+
+/* BADGES */
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:var(--r);font-weight:600}
+.badge.bi{border:none!important}
+.badge.bs{border:none!important}
+.badge.ba{border:none!important}
+.badge.bg2b{border:none!important;background:var(--bg3)}
+
+/* STATS */
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shadow)}
+.sl{font-size:11px;color:var(--text3);margin-bottom:4px}
+.sv{font-size:22px;font-weight:600}
+
+/* TABLA */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+thead th{background:var(--bg2);padding:8px 8px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);border-bottom:.5px solid var(--border);white-space:nowrap}
+tbody tr:hover{background:var(--bg2)}
+tbody td{padding:5px 8px;border-bottom:.5px solid var(--border);vertical-align:middle}
+tbody td input,tbody td select{width:100%;padding:4px 6px;font-size:12px;border:.5px solid transparent;border-radius:4px;background:transparent;color:var(--text);font-family:inherit}
+tbody td input:focus,tbody td select:focus{outline:none;border-color:var(--blue);background:var(--bg)}
+.tn{width:34px;text-align:center;color:var(--text3);font-size:11px}
+.tdel{width:30px;text-align:center}
+.db{width:22px;height:22px;border-radius:50%;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;padding:0}
+.db:hover{background:var(--red-bg);color:var(--red-t)}
+.addrow{width:100%;margin-top:8px;padding:8px;border:.5px dashed var(--border2);border-radius:var(--r);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:inherit;transition:background .15s}
+.addrow:hover{background:var(--bg2);color:var(--text)}
+
+/* DASHBOARD — registro cards */
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.reg-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--rl);padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .2s,transform .15s}
+.reg-card:hover{border-color:var(--blue);transform:translateY(-1px)}
+.rc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.rc-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+.rc-date{font-size:11px;color:var(--text3)}
+.rc-meta{font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6}
+.rc-acts{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-state h3{font-size:16px;font-weight:600;color:var(--text2);margin-bottom:6px}
+.empty-state p{font-size:13px;line-height:1.6}
+
+/* MODO SELECTOR */
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.mode-card{border:.5px solid var(--border2);border-radius:var(--rl);padding:16px 12px;cursor:pointer;text-align:center;transition:border-color .2s,background .2s,transform .1s;background:var(--bg)}
+.mode-card:hover,.mode-card.sel{border-color:var(--blue);background:var(--blue-bg);transform:translateY(-1px)}
+.mode-card:hover .mct,.mode-card.sel .mct{color:var(--blue-t)}
+.mci{font-size:26px;margin-bottom:10px;display:block}
+.mct{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.mcd{font-size:11px;color:var(--text3);line-height:1.5}
+
+/* DROP ZONE */
+.dz{border:1.5px dashed var(--border2);border-radius:var(--rl);padding:28px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:14px}
+.dz:hover,.dz.drag{border-color:var(--blue);background:var(--blue-bg)}
+.dz input{display:none}
+.dz-t{font-size:13px;font-weight:600;margin-bottom:4px}
+.dz-s{font-size:11px;color:var(--text3)}
+
+/* THUMBS */
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.thumb{position:relative;width:70px;height:90px;border:.5px solid var(--border2);border-radius:var(--r);overflow:hidden;flex-shrink:0}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-del{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:none;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.thumb-n{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:9px;background:rgba(0,0,0,.5);color:#fff;padding:2px 0}
+
+/* AI STATUS */
+.ai-bar{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--r);margin-bottom:12px;font-size:13px}
+.ai-bar.loading{background:var(--blue-bg);color:var(--blue-t);border:.5px solid var(--blue)}
+.ai-bar.ok{background:var(--green-bg);color:var(--green-t);border:.5px solid var(--green)}
+.ai-bar.err{background:var(--red-bg);color:var(--red-t);border:.5px solid var(--red)}
+.spin{width:16px;height:16px;border:2px solid rgba(24,95,165,.25);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NOTA */
+.nota{font-size:12px;color:var(--text2);padding:10px 14px;background:var(--bg2);border-radius:var(--r);margin-bottom:12px;line-height:1.6;border-left:2px solid var(--blue)}
+
+/* STEP TABS */
+.stabs{display:flex;background:var(--bg);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
+.stab{flex:1;padding:10px 4px;text-align:center;font-size:11px;color:var(--text3);border-right:.5px solid var(--border);cursor:default}
+.stab:last-child{border-right:none}
+.stab.on{background:var(--blue-bg);color:var(--blue-t);font-weight:600}
+.stab.done{background:var(--green-bg);color:var(--green-t)}
+.stab-n{font-size:9px;display:block;margin-bottom:2px;opacity:.6}
+
+/* SETTINGS KEY */
+.key-wrap{position:relative}
+.key-wrap input{padding-right:80px}
+.key-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--blue-t);cursor:pointer;font-weight:500;background:none;border:none;font-family:inherit}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;padding:10px 18px;background:var(--green-bg);color:var(--green-t);border:.5px solid var(--green);border-radius:var(--r);font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;box-shadow:var(--shadow)}
+#toast.show{opacity:1}
+
+/* RESUMEN */
+.res-body{font-size:13px;line-height:2.1;color:var(--text2)}
+.res-body strong{color:var(--text);font-weight:600}
+.res-hr{border:0;border-top:.5px solid var(--border);margin:10px 0}
+
+/* MISC */
+footer{text-align:center;font-size:11px;color:var(--text3);padding:16px 0 8px;border-top:.5px solid var(--border);margin-top:24px}
+.sep{height:.5px;background:var(--border);margin:14px 0}
+
+@media(max-width:640px){
+  .g2,.g3,.g4,.stats4,.reg-grid,.mode-grid{grid-template-columns:1fr 1fr}
+  .fa{grid-column:1/-1}
+  .mode-grid{grid-template-columns:1fr}
+  .page{padding:14px 12px 80px}
+  .topbar{padding:0 12px}
+  .tnav button span{display:none}
+}
+@media(max-width:400px){
+  .g2,.g3,.g4,.stats4,.reg-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tlogo">📋</div>
+  <div class="ttitle">
+    <h1>Listas de Asistencia</h1>
+    <p>STPS · Guanajuato</p>
+  </div>
+  <div class="tnav">
+    <button class="on" id="nav-dash" onclick="navTo('dash')">📁 <span>Registros</span></button>
+    <button id="nav-nuevo" onclick="nuevoRegistro()">＋ <span>Nuevo</span></button>
+    <button id="nav-cfg" onclick="navTo('cfg')">⚙️ <span>Config.</span></button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ DASHBOARD -->
+<div class="page on" id="page-dash">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div>
+      <h2 style="font-size:18px;font-weight:600">Mis registros</h2>
+      <p style="font-size:12px;color:var(--text3);margin-top:2px">Guardados en este dispositivo</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn bs" onclick="exportarTodos()">⬇ Exportar todos</button>
+      <button class="btn bi" onclick="nuevoRegistro()">＋ Nuevo registro</button>
+    </div>
+  </div>
+  <div id="dash-content"></div>
+  <footer>STPS Guanajuato · Datos guardados solo en este dispositivo · No se envía información a servidores</footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ NUEVO / EDITAR -->
+<div class="page" id="page-form">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+    <div>
+      <h2 style="font-size:18px;font-weight:600" id="form-title">Nuevo registro</h2>
+      <p style="font-size:12px;color:var(--text3)" id="form-sub">Paso 1 de 4</p>
+    </div>
+    <button class="btn bg2b" onclick="navTo('dash')">← Volver al listado</button>
+  </div>
+
+  <!-- STEP TABS -->
+  <div class="stabs">
+    <div class="stab on"   id="stab0"><span class="stab-n">Paso 1</span>Captura</div>
+    <div class="stab"      id="stab1"><span class="stab-n">Paso 2</span>Datos del curso</div>
+    <div class="stab"      id="stab2"><span class="stab-n">Paso 3</span>Participantes</div>
+    <div class="stab"      id="stab3"><span class="stab-n">Paso 4</span>Guardar</div>
+  </div>
+
+  <!-- PASO 1: MODO DE CAPTURA -->
+  <div id="fp0">
+    <div class="card">
+      <div class="stitle">¿Cómo quieres capturar este formato?</div>
+      <div class="mode-grid">
+        <div class="mode-card" id="mc-manual" onclick="setMode('manual')">
+          <span class="mci">✏️</span>
+          <div class="mct">Captura manual</div>
+          <div class="mcd">Llena todos los campos directamente en pantalla</div>
+        </div>
+        <div class="mode-card" id="mc-foto" onclick="setMode('foto')">
+          <span class="mci">📷</span>
+          <div class="mct">Subir foto</div>
+          <div class="mcd">Foto del formato impreso — la IA extrae los datos automáticamente</div>
+        </div>
+        <div class="mode-card" id="mc-pdf" onclick="setMode('pdf')">
+          <span class="mci">📄</span>
+          <div class="mct">Subir PDF</div>
+          <div class="mcd">Sube el PDF del formato y la IA transcribe todos los datos</div>
+        </div>
+      </div>
+
+      <!-- FOTO -->
+      <div id="sub-foto" style="display:none">
+        <div class="nota">Puedes subir una o varias páginas. La IA las leerá todas y combinará los participantes sin duplicados. Requiere API Key en Configuración.</div>
+        <div class="thumbs" id="foto-thumbs" style="display:none"></div>
+        <div class="dz" id="dz-foto" onclick="document.getElementById('fi-foto').click()" ondragover="ddOver(event,'dz-foto')" ondragleave="ddLeave('dz-foto')" ondrop="ddDrop(event,'foto')">
+          <input type="file" id="fi-foto" accept="image/*" multiple onchange="addFiles(this.files,'foto')">
+          <div class="dz-t">Arrastra imágenes aquí o haz clic para seleccionar</div>
+          <div class="dz-s">JPG, PNG — puedes elegir varias páginas</div>
+        </div>
+        <div id="foto-ai-bar" style="display:none"></div>
+        <div class="brow">
+          <button class="btn bi" id="btn-ext-foto" style="display:none" onclick="extractPages('foto')">✨ Extraer con IA</button>
+          <button class="btn bg2b" onclick="goStep(1)">Continuar sin IA →</button>
+        </div>
+      </div>
+
+      <!-- PDF -->
+      <div id="sub-pdf" style="display:none">
+        <div class="nota">Sube el PDF del formato. La IA lo leerá completo aunque tenga varias hojas. Requiere API Key en Configuración.</div>
+        <div class="thumbs" id="pdf-thumbs" style="display:none"></div>
+        <div class="dz" id="dz-pdf" onclick="document.getElementById('fi-pdf').click()" ondragover="ddOver(event,'dz-pdf')" ondragleave="ddLeave('dz-pdf')" ondrop="ddDrop(event,'pdf')">
+          <input type="file" id="fi-pdf" accept=".pdf,application/pdf" onchange="addFiles(this.files,'pdf')">
+          <div class="dz-t">Arrastra el PDF aquí o haz clic para seleccionar</div>
+          <div class="dz-s">Archivos PDF — una o varias páginas</div>
+        </div>
+        <div id="pdf-ai-bar" style="display:none"></div>
+        <div class="brow">
+          <button class="btn bi" id="btn-ext-pdf" style="display:none" onclick="extractPages('pdf')">✨ Extraer con IA</button>
+          <button class="btn bg2b" onclick="goStep(1)">Continuar sin IA →</button>
+        </div>
+      </div>
+
+      <!-- MANUAL solo botón -->
+      <div id="sub-manual" style="display:none">
+        <div class="brow">
+          <button class="btn bi" onclick="goStep(1)">Continuar →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 2: DATOS DEL CURSO -->
+  <div id="fp1" style="display:none">
+    <div class="card">
+      <div class="stitle">Empresa / Centro de trabajo</div>
+      <div class="g2">
+        <div class="f fa"><label>Razón social y nombre comercial</label><input id="empresa" type="text" placeholder="Dirección General de Reintegración Social para Adolescentes"></div>
+        <div class="f"><label>Domicilio</label><input id="domicilio" type="text" placeholder="Carretera León-Cuerámaro"></div>
+        <div class="f"><label>Municipio</label><input id="municipio" type="text" placeholder="León"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stitle">Datos del curso o taller</div>
+      <div class="g2">
+        <div class="f fa"><label>Nombre del curso o taller</label><input id="curso" type="text" placeholder="Autoconocimiento, Herramienta para el Desarrollo"></div>
+        <div class="f"><label>Modalidad</label><select id="modalidad"><option>Presencial</option><option>Virtual</option><option>Mixta</option></select></div>
+        <div class="f"><label>Categoría</label><select id="categoria"><option>Buenas Prácticas Laborales</option><option>Seguridad e Higiene</option><option>Competencias Técnicas</option><option>Desarrollo Humano</option><option>Otro</option></select></div>
+        <div class="f"><label>Fecha</label><input id="fecha" type="date"></div>
+        <div class="f"><label>Hora inicio</label><input id="hora_ini" type="time" value="11:00"></div>
+        <div class="f"><label>Hora término</label><input id="hora_fin" type="time" value="13:00"></div>
+        <div class="f"><label>Centros de trabajo</label><input id="centros" type="number" min="1" value="1"></div>
+        <div class="f"><label>Con discapacidad</label><input id="discap" type="number" min="0" value="0"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stitle">Responsable</div>
+      <div class="g3">
+        <div class="f"><label>Instructor</label><input id="instructor" type="text" placeholder="Nombre completo"></div>
+        <div class="f"><label>Responsable / Representante</label><input id="responsable" type="text" placeholder="Nombre"></div>
+        <div class="f"><label>Correo electrónico</label><input id="correo" type="email" placeholder="correo@guanajuato.gob.mx"></div>
+        <div class="f fa"><label>Comentarios del instructor</label><textarea id="comentarios" placeholder="Observaciones, incidencias, notas..."></textarea></div>
+      </div>
+    </div>
+    <div class="brow">
+      <button class="btn bg2b" onclick="goStep(0)">← Volver</button>
+      <button class="btn bi" onclick="goStep(2)">Continuar a participantes →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3: PARTICIPANTES -->
+  <div id="fp2" style="display:none">
+    <div class="stats4">
+      <div class="stat"><div class="sl">Total</div><div class="sv" id="st-t" style="color:var(--blue)">0</div></div>
+      <div class="stat"><div class="sl">Hombres</div><div class="sv" id="st-h">0</div></div>
+      <div class="stat"><div class="sl">Mujeres</div><div class="sv" id="st-m">0</div></div>
+      <div class="stat"><div class="sl">Sindicalizados</div><div class="sv" id="st-s" style="color:var(--green)">0</div></div>
+    </div>
+    <div class="card">
+      <div class="stitle">
+        Participantes
+        <span class="badge bi" id="ptag" style="margin-left:4px">0</span>
+      </div>
+      <div class="tw">
+        <table>
+          <thead><tr>
+            <th class="tn">No.</th>
+            <th style="min-width:175px">Nombre completo</th>
+            <th style="min-width:80px">Género</th>
+            <th style="min-width:100px">Cargo</th>
+            <th style="min-width:115px">Escolaridad</th>
+            <th style="min-width:95px">Sindicalizado</th>
+            <th class="tdel"></th>
+          </tr></thead>
+          <tbody id="ptbody"></tbody>
+        </table>
+      </div>
+      <div id="pempty" style="text-align:center;padding:28px;font-size:13px;color:var(--text3)">Sin participantes — agrega el primero</div>
+      <button class="addrow" onclick="addP()">+ Agregar participante</button>
+    </div>
+    <div class="brow">
+      <button class="btn bg2b" onclick="goStep(1)">← Datos del curso</button>
+      <button class="btn bi" onclick="goStep(3)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 4: GUARDAR / EXPORTAR -->
+  <div id="fp3" style="display:none">
+    <div class="card">
+      <div class="stitle">Resumen del registro</div>
+      <div class="res-body" id="resumen"></div>
+    </div>
+    <div class="card">
+      <div class="stitle">Guardar y exportar</div>
+      <div class="nota">Al guardar, el registro queda en este dispositivo y puedes acceder a él desde el listado principal en cualquier momento.</div>
+      <div class="brow">
+        <button class="btn bs" onclick="guardarRegistro()">💾 Guardar registro</button>
+        <button class="btn bi" onclick="exportarCSV()">⬇ Descargar CSV</button>
+        <button class="btn bg2b" onclick="goStep(2)">← Participantes</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════ CONFIGURACIÓN -->
+<div class="page" id="page-cfg">
+  <h2 style="font-size:18px;font-weight:600;margin-bottom:4px">Configuración</h2>
+  <p style="font-size:12px;color:var(--text3);margin-bottom:20px">Ajustes de la aplicación</p>
+
+  <div class="card">
+    <div class="stitle">API Key — Transcripción con IA</div>
+    <div class="nota">La API Key permite extraer datos automáticamente de fotos y PDFs. Se guarda solo en este dispositivo. Sin ella la app funciona perfectamente en modo manual.<br><br>Obtén tu key en <strong>console.anthropic.com</strong> → API Keys → Create Key.</div>
+    <div class="f" style="margin-bottom:12px">
+      <label>Anthropic API Key</label>
+      <div class="key-wrap">
+        <input type="password" id="cfg-apikey" placeholder="sk-ant-..." oninput="saveKey()">
+        <button class="key-toggle" onclick="toggleKey()">Mostrar</button>
+      </div>
+    </div>
+    <div id="key-status" style="font-size:12px;color:var(--text3)"></div>
+  </div>
+
+  <div class="card">
+    <div class="stitle">Datos almacenados</div>
+    <div id="storage-info" style="font-size:13px;color:var(--text2);margin-bottom:12px"></div>
+    <div class="brow">
+      <button class="btn br" onclick="borrarTodo()">🗑 Borrar todos los registros</button>
+    </div>
+  </div>
+
+  <footer>STPS Guanajuato · Los datos no salen de tu dispositivo</footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  CONSTANTES
+// ═══════════════════════════════════════════════════════════════════
+const ESC  = ['Primaria','Secundaria','Preparatoria','Licenciatura','Posgrado','Alfabetización','Otro'];
+const SIND = ['No Aplica','Sí','No'];
+const STORAGE_KEY = 'stps_registros';
+
+// ═══════════════════════════════════════════════════════════════════
+//  ESTADO
+// ═══════════════════════════════════════════════════════════════════
+let parts   = [];
+let nextId  = 1;
+let curMode = 'manual';
+let pages   = [];      // {b64, type, thumb, isPdf}
+let editId  = null;    // null = nuevo, string = editando
+
+// ═══════════════════════════════════════════════════════════════════
+//  NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════════════
+function navTo(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tnav button').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-' + name).classList.add('on');
+  document.getElementById('nav-' + name)?.classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'dash') renderDash();
+  if (name === 'cfg')  renderCfg();
+}
+
+function nuevoRegistro() {
+  editId = null;
+  parts  = []; nextId = 1; pages = []; curMode = 'manual';
+  clearForm();
+  resetSteps();
+  goStep(0);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tnav button').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-form').classList.add('on');
+  document.getElementById('nav-nuevo').classList.add('on');
+  document.getElementById('form-title').textContent = 'Nuevo registro';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function editarRegistro(id) {
+  const regs = getRegistros();
+  const r = regs.find(x => x.id === id);
+  if (!r) return;
+  editId = id;
+  parts  = r.participantes.map(p => ({ ...p }));
+  nextId = parts.length ? Math.max(...parts.map(p => p.id)) + 1 : 1;
+  pages  = [];
+  curMode = 'manual';
+  loadForm(r);
+  resetSteps();
+  goStep(1);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tnav button').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-form').classList.add('on');
+  document.getElementById('form-title').textContent = 'Editar registro';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  STEPS
+// ═══════════════════════════════════════════════════════════════════
+function resetSteps() {
+  [0,1,2,3].forEach(i => {
+    document.getElementById('fp' + i).style.display  = 'none';
+    const s = document.getElementById('stab' + i);
+    s.classList.remove('on', 'done');
+  });
+  ['mc-manual','mc-foto','mc-pdf'].forEach(id => document.getElementById(id)?.classList.remove('sel'));
+  ['sub-manual','sub-foto','sub-pdf'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+}
+
+function goStep(n) {
+  [0,1,2,3].forEach(i => {
+    document.getElementById('fp' + i).style.display = 'none';
+    const s = document.getElementById('stab' + i);
+    s.classList.remove('on', 'done');
+    if (i < n) s.classList.add('done');
+  });
+  document.getElementById('fp' + n).style.display = 'block';
+  document.getElementById('stab' + n).classList.add('on');
+  document.getElementById('form-sub').textContent = 'Paso ' + (n+1) + ' de 4';
+  if (n === 2) renderP();
+  if (n === 3) buildResumen();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  MODO DE CAPTURA
+// ═══════════════════════════════════════════════════════════════════
+function setMode(m) {
+  curMode = m;
+  ['manual','foto','pdf'].forEach(x => {
+    document.getElementById('mc-' + x).classList.remove('sel');
+    document.getElementById('sub-' + x).style.display = 'none';
+  });
+  document.getElementById('mc-' + m).classList.add('sel');
+  document.getElementById('sub-' + m).style.display = 'block';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  ARCHIVOS (foto / pdf)
+// ═══════════════════════════════════════════════════════════════════
+function ddOver(e, id)  { e.preventDefault(); document.getElementById(id)?.classList.add('drag'); }
+function ddLeave(id)    { document.getElementById(id)?.classList.remove('drag'); }
+function ddDrop(e, mode){ e.preventDefault(); ddLeave('dz-' + mode); addFiles(e.dataTransfer.files, mode); }
+
+function addFiles(files, mode) {
+  Array.from(files).forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      const isPdf = f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf');
+      const b64   = e.target.result.split(',')[1];
+      const thumb = isPdf ? null : e.target.result;
+      pages.push({ b64, type: f.type || 'image/jpeg', thumb, isPdf, name: f.name });
+      renderThumbs(mode);
+      document.getElementById('btn-ext-' + mode).style.display = 'inline-flex';
+    };
+    r.readAsDataURL(f);
+  });
+}
+
+function renderThumbs(mode) {
+  const strip = document.getElementById(mode + '-thumbs');
+  strip.style.display = pages.length ? 'flex' : 'none';
+  strip.innerHTML = pages.map((p, i) => `
+    <div class="thumb">
+      ${p.thumb ? `<img src="${p.thumb}" alt="p${i+1}">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px">📄</div>`}
+      <button class="thumb-del" onclick="removePage(${i},'${mode}')">×</button>
+      <div class="thumb-n">${p.isPdf ? p.name.slice(0,10) : 'Hoja ' + (i+1)}</div>
+    </div>`).join('');
+}
+
+function removePage(i, mode) {
+  pages.splice(i, 1);
+  renderThumbs(mode);
+  if (!pages.length) document.getElementById('btn-ext-' + mode).style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  EXTRACCIÓN IA
+// ═══════════════════════════════════════════════════════════════════
+async function extractPages(mode) {
+  const apiKey = localStorage.getItem('stps_apikey') || '';
+  if (!apiKey) {
+    showAiBar(mode, 'err', 'No hay API Key configurada. Ve a Configuración → ingresa tu key de Anthropic.');
+    return;
+  }
+  if (!pages.length) return;
+
+  const btn = document.getElementById('btn-ext-' + mode);
+  btn.disabled = true;
+  showAiBar(mode, 'loading', 'Analizando ' + pages.length + ' archivo(s) con IA...');
+
+  const prompt = `Eres un asistente que lee listas de asistencia de capacitación de la STPS México.
+Analiza el documento y extrae TODOS los datos visibles.
+Devuelve ÚNICAMENTE JSON válido sin texto adicional ni backticks:
+{"empresa":"","domicilio":"","municipio":"","curso":"","modalidad":"Presencial","categoria":"","fecha":"","hora_inicio":"","hora_termino":"","instructor":"","responsable":"","correo":"","centros":"1","discapacidad":"0","comentarios":"","participantes":[{"nombre":"","genero":"Hombre","cargo":"No Aplica","escolaridad":"Secundaria","sindicalizado":"No Aplica"}]}
+Reglas: fecha YYYY-MM-DD, horarios HH:MM, escolaridad: Primaria/Secundaria/Preparatoria/Licenciatura/Posgrado/Alfabetización/Otro, sindicalizado: Sí/No/No Aplica, genero: Hombre/Mujer. Incluye TODOS los participantes.`;
+
+  const allParts = [];
+  let header = null;
+
+  try {
+    for (let i = 0; i < pages.length; i++) {
+      showAiBar(mode, 'loading', `Procesando ${i+1} de ${pages.length}...`);
+      const p = pages[i];
+      const content = p.isPdf
+        ? [{ type:'document', source:{ type:'base64', media_type:'application/pdf', data: p.b64 }}, { type:'text', text: prompt }]
+        : [{ type:'image',    source:{ type:'base64', media_type: p.type, data: p.b64 }},              { type:'text', text: prompt }];
+
+      const res  = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'x-api-key': apiKey, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
+        body: JSON.stringify({ model:'claude-opus-4-5', max_tokens:2000, messages:[{ role:'user', content }] })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      let raw = data.content.map(c => c.text||'').join('').replace(/```json|```/g,'').trim();
+      const json = JSON.parse(raw);
+      if (i === 0) header = json;
+      if (Array.isArray(json.participantes)) {
+        json.participantes.forEach(pt => {
+          if (pt.nombre?.trim()) {
+            const dup = allParts.find(x => x.nombre.toLowerCase().trim() === pt.nombre.toLowerCase().trim());
+            if (!dup) allParts.push(pt);
+          }
+        });
+      }
+    }
+    header.participantes = allParts;
+    loadForm(header);
+    parts  = allParts.map((p, i) => ({ id: i+1, nombre: p.nombre||'', genero: p.genero||'Hombre', cargo: p.cargo||'No Aplica', escolaridad: p.escolaridad||'Secundaria', sindicalizado: p.sindicalizado||'No Aplica' }));
+    nextId = parts.length + 1;
+    showAiBar(mode, 'ok', '✓ Datos extraídos: ' + allParts.length + ' participantes. Revisa y corrige si es necesario.');
+    setTimeout(() => goStep(1), 900);
+  } catch(err) {
+    showAiBar(mode, 'err', 'Error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function showAiBar(mode, type, msg) {
+  const el = document.getElementById(mode + '-ai-bar');
+  el.style.display = 'flex';
+  el.className = 'ai-bar ' + type;
+  el.innerHTML = (type === 'loading' ? '<div class="spin"></div>' : '') + `<span>${msg}</span>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  FORMULARIO
+// ═══════════════════════════════════════════════════════════════════
+function clearForm() {
+  ['empresa','domicilio','municipio','curso','fecha','instructor','responsable','correo','comentarios'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const d = document.getElementById('discap'); if(d) d.value = '0';
+  const c = document.getElementById('centros'); if(c) c.value = '1';
+  const hi = document.getElementById('hora_ini'); if(hi) hi.value = '11:00';
+  const hf = document.getElementById('hora_fin'); if(hf) hf.value = '13:00';
+}
+
+function loadForm(d) {
+  const s = (id, v) => { const el = document.getElementById(id); if(el && v !== undefined) el.value = v || ''; };
+  s('empresa',d.empresa); s('domicilio',d.domicilio); s('municipio',d.municipio);
+  s('curso',d.curso); s('modalidad',d.modalidad); s('categoria',d.categoria);
+  s('fecha',d.fecha); s('hora_ini',d.hora_inicio||d.hora_ini);
+  s('hora_fin',d.hora_termino||d.hora_fin);
+  s('instructor',d.instructor); s('responsable',d.responsable);
+  s('correo',d.correo); s('centros',d.centros||'1');
+  s('discap',d.discapacidad||d.discap||'0'); s('comentarios',d.comentarios);
+}
+
+function getFormData() {
+  const g = id => document.getElementById(id)?.value || '';
+  return {
+    empresa: g('empresa'), domicilio: g('domicilio'), municipio: g('municipio'),
+    curso: g('curso'), modalidad: g('modalidad'), categoria: g('categoria'),
+    fecha: g('fecha'), hora_ini: g('hora_ini'), hora_fin: g('hora_fin'),
+    instructor: g('instructor'), responsable: g('responsable'), correo: g('correo'),
+    centros: g('centros'), discap: g('discap'), comentarios: g('comentarios'),
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PARTICIPANTES
+// ═══════════════════════════════════════════════════════════════════
+function addP(d) {
+  const p = d || { id: nextId++, nombre:'', genero:'Hombre', cargo:'No Aplica', escolaridad:'Secundaria', sindicalizado:'No Aplica' };
+  if (!d) parts.push(p);
+  renderP();
+}
+
+function renderP() {
+  const body  = document.getElementById('ptbody');
+  const empty = document.getElementById('pempty');
+  empty.style.display = parts.length ? 'none' : 'block';
+  body.innerHTML = parts.map((p, i) => `<tr>
+    <td class="tn">${i+1}</td>
+    <td><input value="${xe(p.nombre)}" placeholder="Nombre completo" oninput="upd(${p.id},'nombre',this.value)"></td>
+    <td><select onchange="upd(${p.id},'genero',this.value)">
+      <option ${p.genero==='Hombre'?'selected':''}>Hombre</option>
+      <option ${p.genero==='Mujer'?'selected':''}>Mujer</option>
+    </select></td>
+    <td><input value="${xe(p.cargo)}" placeholder="N/A" oninput="upd(${p.id},'cargo',this.value)"></td>
+    <td><select onchange="upd(${p.id},'escolaridad',this.value)">
+      ${ESC.map(e => `<option ${p.escolaridad===e?'selected':''}>${e}</option>`).join('')}
+    </select></td>
+    <td><select onchange="upd(${p.id},'sindicalizado',this.value)">
+      ${SIND.map(s => `<option ${p.sindicalizado===s?'selected':''}>${s}</option>`).join('')}
+    </select></td>
+    <td class="tdel"><button class="db" onclick="delP(${p.id})">×</button></td>
+  </tr>`).join('');
+  updStats();
+}
+
+function xe(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function upd(id, f, v) { const p = parts.find(x => x.id===id); if(p){p[f]=v;updStats();} }
+function delP(id) { parts = parts.filter(p => p.id!==id); renderP(); }
+
+function updStats() {
+  const t=parts.length, h=parts.filter(p=>p.genero==='Hombre').length, s=parts.filter(p=>p.sindicalizado==='Sí').length;
+  document.getElementById('st-t').textContent = t;
+  document.getElementById('st-h').textContent = h;
+  document.getElementById('st-m').textContent = t-h;
+  document.getElementById('st-s').textContent = s;
+  document.getElementById('ptag').textContent  = t;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  RESUMEN
+// ═══════════════════════════════════════════════════════════════════
+function buildResumen() {
+  const d = getFormData();
+  const t = parts.length, h = parts.filter(p=>p.genero==='Hombre').length, s = parts.filter(p=>p.sindicalizado==='Sí').length;
+  document.getElementById('resumen').innerHTML = `
+    <strong>Empresa:</strong> ${d.empresa||'—'}<br>
+    <strong>Domicilio:</strong> ${d.domicilio||'—'} &nbsp;|&nbsp; <strong>Municipio:</strong> ${d.municipio||'—'}<br>
+    <strong>Curso:</strong> ${d.curso||'—'}<br>
+    <strong>Modalidad:</strong> ${d.modalidad} &nbsp;|&nbsp; <strong>Categoría:</strong> ${d.categoria}<br>
+    <strong>Fecha:</strong> ${d.fecha||'—'} &nbsp;|&nbsp; <strong>Horario:</strong> ${d.hora_ini||'—'} – ${d.hora_fin||'—'}<br>
+    <strong>Instructor:</strong> ${d.instructor||'—'} &nbsp;|&nbsp; <strong>Responsable:</strong> ${d.responsable||'—'}<br>
+    <hr class="res-hr">
+    <strong>Total participantes:</strong> ${t} &nbsp;|&nbsp; <strong>Hombres:</strong> ${h} &nbsp;|&nbsp; <strong>Mujeres:</strong> ${t-h}<br>
+    <strong>Sindicalizados:</strong> ${s} &nbsp;|&nbsp; <strong>Con discapacidad:</strong> ${d.discap} &nbsp;|&nbsp; <strong>Centros:</strong> ${d.centros}
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  STORAGE
+// ═══════════════════════════════════════════════════════════════════
+function getRegistros() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+function saveRegistros(regs) { localStorage.setItem(STORAGE_KEY, JSON.stringify(regs)); }
+
+function guardarRegistro() {
+  const d   = getFormData();
+  const regs = getRegistros();
+  const reg  = { ...d, participantes: parts.map(p=>({...p})), updatedAt: new Date().toISOString() };
+
+  if (editId) {
+    const idx = regs.findIndex(r => r.id === editId);
+    if (idx >= 0) { reg.id = editId; reg.createdAt = regs[idx].createdAt; regs[idx] = reg; }
+    else           { reg.id = Date.now().toString(); reg.createdAt = reg.updatedAt; regs.push(reg); }
+  } else {
+    reg.id = Date.now().toString();
+    reg.createdAt = reg.updatedAt;
+    regs.unshift(reg);
+  }
+  saveRegistros(regs);
+  toast('Registro guardado correctamente');
+  setTimeout(() => navTo('dash'), 800);
+}
+
+function eliminarRegistro(id) {
+  if (!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.')) return;
+  const regs = getRegistros().filter(r => r.id !== id);
+  saveRegistros(regs);
+  renderDash();
+  toast('Registro eliminado');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════════════════
+function renderDash() {
+  const regs = getRegistros();
+  const el   = document.getElementById('dash-content');
+
+  if (!regs.length) {
+    el.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <h3>Sin registros todavía</h3>
+      <p>Presiona <strong>+ Nuevo registro</strong> para capturar tu primera lista de asistencia.</p>
+    </div>`;
+    return;
+  }
+
+  const totalP = regs.reduce((a, r) => a + (r.participantes?.length || 0), 0);
+  el.innerHTML = `
+    <div class="stats4" style="margin-bottom:20px">
+      <div class="stat"><div class="sl">Capacitaciones</div><div class="sv" style="color:var(--blue)">${regs.length}</div></div>
+      <div class="stat"><div class="sl">Participantes total</div><div class="sv">${totalP}</div></div>
+      <div class="stat"><div class="sl">Más reciente</div><div class="sv" style="font-size:14px">${fmtDate(regs[0].fecha)}</div></div>
+      <div class="stat"><div class="sl">Municipios</div><div class="sv">${new Set(regs.map(r=>r.municipio).filter(Boolean)).size}</div></div>
+    </div>
+    <div class="reg-grid">
+      ${regs.map(r => `
+        <div class="reg-card">
+          <div class="rc-top">
+            <div>
+              <div class="rc-name">${r.curso || 'Sin nombre'}</div>
+              <div class="rc-date">${fmtDate(r.fecha)} · ${r.municipio||'—'}</div>
+            </div>
+            <span class="badge bi">${r.participantes?.length||0} part.</span>
+          </div>
+          <div class="rc-meta">
+            ${r.empresa||'—'}<br>
+            ${r.instructor ? 'Instructor: ' + r.instructor : ''}
+          </div>
+          <div class="rc-acts">
+            <button class="btn bi" style="padding:5px 10px;font-size:11px" onclick="editarRegistro('${r.id}')">✏️ Editar</button>
+            <button class="btn bs" style="padding:5px 10px;font-size:11px" onclick="exportarUno('${r.id}')">⬇ CSV</button>
+            <button class="btn br" style="padding:5px 10px;font-size:11px" onclick="eliminarRegistro('${r.id}')">🗑</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d + 'T12:00:00').toLocaleDateString('es-MX', { day:'2-digit', month:'short', year:'numeric' }); }
+  catch { return d; }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  EXPORTAR CSV
+// ═══════════════════════════════════════════════════════════════════
+const CSV_HDR = 'No.,Nombre,Género,Cargo,Escolaridad,Sindicalizado,Empresa,Municipio,Curso,Modalidad,Categoría,Fecha,Hora Inicio,Hora Término,Instructor,Responsable,Correo,Centros,Con Discapacidad,Comentarios';
+
+function regToRows(r) {
+  const clean = v => (String(v||'')).replace(/,/g,'|').replace(/\n/g,' ');
+  return (r.participantes||[]).map((p, i) =>
+    [i+1, p.nombre, p.genero, p.cargo, p.escolaridad, p.sindicalizado,
+     r.empresa, r.municipio, r.curso, r.modalidad, r.categoria,
+     r.fecha, r.hora_ini, r.hora_fin, r.instructor, r.responsable,
+     r.correo, r.centros, r.discap, r.comentarios].map(v => `"${clean(v)}"`).join(',')
+  );
+}
+
+function exportarCSV() {
+  const d = getFormData();
+  if (!parts.length) { toast('Agrega participantes antes de exportar'); return; }
+  const reg = { ...d, participantes: parts };
+  const csv = '\uFEFF' + [CSV_HDR, ...regToRows(reg)].join('\n');
+  dlFile(csv, `lista_${d.fecha||'sin_fecha'}.csv`);
+  toast('CSV descargado');
+}
+
+function exportarUno(id) {
+  const r = getRegistros().find(x => x.id === id);
+  if (!r || !r.participantes?.length) { toast('Este registro no tiene participantes'); return; }
+  const csv = '\uFEFF' + [CSV_HDR, ...regToRows(r)].join('\n');
+  dlFile(csv, `lista_${r.fecha||id}.csv`);
+  toast('CSV descargado');
+}
+
+function exportarTodos() {
+  const regs = getRegistros();
+  if (!regs.length) { toast('No hay registros guardados'); return; }
+  const rows = regs.flatMap(r => regToRows(r));
+  if (!rows.length) { toast('Los registros no tienen participantes'); return; }
+  const csv = '\uFEFF' + [CSV_HDR, ...rows].join('\n');
+  dlFile(csv, `todos_los_registros_${new Date().toISOString().slice(0,10)}.csv`);
+  toast(`${rows.length} filas exportadas`);
+}
+
+function dlFile(content, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type:'text/csv;charset=utf-8;' }));
+  a.download = filename;
+  a.click();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  CONFIGURACIÓN
+// ═══════════════════════════════════════════════════════════════════
+function renderCfg() {
+  const key = localStorage.getItem('stps_apikey') || '';
+  document.getElementById('cfg-apikey').value = key;
+  document.getElementById('key-status').textContent = key ? '✓ API Key guardada (' + key.slice(0,10) + '...)' : 'Sin API Key — modo manual activo';
+  const regs = getRegistros();
+  const total = regs.reduce((a,r) => a + (r.participantes?.length||0), 0);
+  document.getElementById('storage-info').innerHTML = `<strong>${regs.length}</strong> registros guardados · <strong>${total}</strong> participantes en total`;
+}
+
+function saveKey() {
+  const v = document.getElementById('cfg-apikey').value.trim();
+  if (v) localStorage.setItem('stps_apikey', v);
+  else   localStorage.removeItem('stps_apikey');
+  document.getElementById('key-status').textContent = v ? '✓ API Key guardada' : 'Sin API Key — modo manual activo';
+}
+
+function toggleKey() {
+  const inp = document.getElementById('cfg-apikey');
+  const btn = inp.nextElementSibling;
+  if (inp.type === 'password') { inp.type = 'text';     btn.textContent = 'Ocultar'; }
+  else                         { inp.type = 'password'; btn.textContent = 'Mostrar'; }
+}
+
+function borrarTodo() {
+  if (!confirm('¿Borrar TODOS los registros? Esta acción no se puede deshacer.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  renderDash();
+  renderCfg();
+  toast('Todos los registros eliminados');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════════════════
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════════
+renderDash();
+</script>
+</body>
+</html>
