@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Asistencia — STPS Guanajuato</title>
+<style>
+:root{--blue:#185FA5;--blue-bg:#E6F1FB;--blue-t:#0C447C;--green:#3B6D11;--green-bg:#EAF3DE;--green-t:#27500A;--red-bg:#FCEBEB;--red-t:#A32D2D;--border:rgba(0,0,0,.11);--border2:rgba(0,0,0,.2);--text:#1a1a1a;--text2:#5F5E5A;--text3:#888780;--bg:#ffffff;--bg2:#F8F7F4;--shadow:0 1px 4px rgba(0,0,0,.07),0 0 0 0.5px rgba(0,0,0,.05);--r:8px;--rl:12px}
+@media(prefers-color-scheme:dark){:root{--border:rgba(255,255,255,.11);--border2:rgba(255,255,255,.2);--text:#F1EFE8;--text2:#B4B2A9;--text3:#888780;--bg:#1C1C1A;--bg2:#242422;--shadow:0 1px 4px rgba(0,0,0,.3);--blue-bg:#0C447C;--blue-t:#B5D4F4;--green-bg:#085041;--green-t:#9FE1CB;--red-bg:#4A1B0C;--red-t:#F0997B}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:var(--text);background:var(--bg2);min-height:100vh}
+.topbar{background:var(--bg);border-bottom:.5px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.logo{width:38px;height:38px;border-radius:var(--r);background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:.5px solid var(--border)}
+.topbar h1{font-size:15px;font-weight:600}
+.topbar p{font-size:11px;color:var(--text3);margin-top:1px}
+.wrap{max-width:800px;margin:0 auto;padding:20px 16px 80px}
+.tabs{display:flex;background:var(--bg);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
+.tab{flex:1;padding:11px 4px;text-align:center;font-size:12px;color:var(--text3);border-right:.5px solid var(--border);cursor:pointer;transition:background .15s,color .15s;user-select:none}
+.tab:last-child{border-right:none}
+.tab.on{background:var(--blue-bg);color:var(--blue-t);font-weight:600}
+.tab.ok{background:var(--green-bg);color:var(--green-t)}
+.tab-n{font-size:9px;display:block;margin-bottom:2px;opacity:.6}
+.card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.stitle{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;padding-bottom:9px;border-bottom:.5px solid var(--border)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.span2{grid-column:span 2}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:11px;font-weight:500;color:var(--text2)}
+.f input,.f select,.f textarea{padding:8px 11px;font-size:13px;border:.5px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--text);font-family:inherit;width:100%;transition:border-color .15s,box-shadow .15s}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.f textarea{resize:vertical;min-height:58px}
+.btn{padding:9px 18px;border-radius:var(--r);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500;transition:opacity .15s,background .15s,transform .1s;display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:scale(.98)}
+.bi{border:.5px solid var(--blue)!important;background:var(--blue-bg);color:var(--blue-t)}
+.bi:hover{opacity:.8}
+.bs{border:.5px solid var(--green)!important;background:var(--green-bg);color:var(--green-t)}
+.bs:hover{opacity:.8}
+.bg-btn{border:.5px solid var(--border2)!important;background:transparent;color:var(--text)}
+.bg-btn:hover{background:var(--bg2)}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shadow)}
+.sl{font-size:11px;color:var(--text3);margin-bottom:5px}
+.sv{font-size:22px;font-weight:600}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:720px}
+thead th{background:var(--bg2);padding:9px 8px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);border-bottom:.5px solid var(--border);white-space:nowrap}
+tbody tr:hover{background:var(--bg2)}
+tbody td{padding:5px 8px;border-bottom:.5px solid var(--border)}
+tbody td input,tbody td select{width:100%;padding:4px 6px;font-size:12px;border:.5px solid transparent;border-radius:4px;background:transparent;color:var(--text);font-family:inherit}
+tbody td input:focus,tbody td select:focus{outline:none;border-color:var(--blue);background:var(--bg)}
+.tn{width:36px;text-align:center;color:var(--text3);font-size:11px}
+.td{width:32px;text-align:center}
+.db{width:22px;height:22px;border-radius:50%;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;padding:0}
+.db:hover{background:var(--red-bg);color:var(--red-t)}
+.addrow{width:100%;margin-top:10px;padding:9px;border:.5px dashed var(--border2);border-radius:var(--r);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:inherit;transition:background .15s}
+.addrow:hover{background:var(--bg2);color:var(--text)}
+.badge{display:inline-block;font-size:10px;padding:2px 9px;border-radius:var(--r);font-weight:600;margin-left:6px}
+.bi-b{background:var(--blue-bg);color:var(--blue-t)}
+#resumen{font-size:13px;line-height:2.1;color:var(--text2)}
+#resumen strong{color:var(--text);font-weight:600}
+.rhr{border:0;border-top:.5px solid var(--border);margin:10px 0}
+.nota{font-size:12px;color:var(--text2);padding:10px 14px;background:var(--bg2);border-radius:var(--r);margin-bottom:14px;line-height:1.6;border-left:2px solid var(--blue)}
+#toast{position:fixed;bottom:20px;right:20px;padding:10px 18px;background:var(--green-bg);color:var(--green-t);border:.5px solid var(--green);border-radius:var(--r);font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;box-shadow:var(--shadow)}
+#toast.show{opacity:1}
+footer{text-align:center;font-size:11px;color:var(--text3);margin-top:28px;padding-top:14px;border-top:.5px solid var(--border)}
+@media(max-width:600px){.g2,.g3,.stats{grid-template-columns:1fr 1fr}.span2{grid-column:1/-1}.wrap{padding:12px 12px 80px}}
+@media(max-width:400px){.g2,.g3,.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">📋</div>
+  <div>
+    <h1>Lista de asistencia — Capacitación laboral</h1>
+    <p>STPS · Subsecretaría del Trabajo · Gobierno de Guanajuato</p>
+  </div>
+</div>
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab on" id="t0" onclick="showTab(0)"><span class="tab-n">Paso 1</span>Datos del curso</div>
+    <div class="tab"    id="t1" onclick="showTab(1)"><span class="tab-n">Paso 2</span>Participantes</div>
+    <div class="tab"    id="t2" onclick="showTab(2)"><span class="tab-n">Paso 3</span>Exportar</div>
+  </div>
+
+  <div id="v0">
+    <div class="card">
+      <div class="stitle">Empresa / Centro de trabajo</div>
+      <div class="g2">
+        <div class="f span2"><label>Razón social y nombre comercial de la empresa</label><input id="empresa" type="text" placeholder="Ej. Dirección General de Reintegración Social para Adolescentes"></div>
+        <div class="f"><label>Domicilio</label><input id="domicilio" type="text" placeholder="Carretera León-Cuerámaro"></div>
+        <div class="f"><label>Municipio</label><input id="municipio" type="text" placeholder="León"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stitle">Datos del curso o taller</div>
+      <div class="g2">
+        <div class="f span2"><label>Nombre del curso o taller</label><input id="curso" type="text" placeholder="Ej. Autoconocimiento, Herramienta para el Desarrollo"></div>
+        <div class="f"><label>Modalidad</label><select id="modalidad"><option>Presencial</option><option>Virtual</option><option>Mixta</option></select></div>
+        <div class="f"><label>Categoría</label><select id="categoria"><option>Buenas Prácticas Laborales</option><option>Seguridad e Higiene</option><option>Competencias Técnicas</option><option>Desarrollo Humano</option><option>Otro</option></select></div>
+        <div class="f"><label>Fecha</label><input id="fecha" type="date"></div>
+        <div class="f"><label>Hora de inicio</label><input id="hora_ini" type="time" value="11:00"></div>
+        <div class="f"><label>Hora de término</label><input id="hora_fin" type="time" value="13:00"></div>
+        <div class="f"><label>Centros de trabajo participantes</label><input id="centros" type="number" min="1" value="1"></div>
+        <div class="f"><label>Participantes con discapacidad</label><input id="discap" type="number" min="0" value="0"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stitle">Responsable del curso</div>
+      <div class="g3">
+        <div class="f"><label>Nombre del instructor</label><input id="instructor" type="text" placeholder="Nombre completo"></div>
+        <div class="f"><label>Responsable / Representante</label><input id="responsable" type="text" placeholder="Eduardo Arturo Pérez Arcos"></div>
+        <div class="f"><label>Correo electrónico</label><input id="correo" type="email" placeholder="correo@guanajuato.gob.mx"></div>
+        <div class="f span2" style="grid-column:1/-1"><label>Comentarios del instructor</label><textarea id="comentarios" placeholder="Observaciones, incidencias o notas relevantes del taller..."></textarea></div>
+      </div>
+    </div>
+    <div class="brow">
+      <button class="btn bi" onclick="showTab(1)">Continuar a participantes →</button>
+      <button class="btn bg-btn" onclick="cargarEjemplo()">Cargar ejemplo</button>
+      <button class="btn bg-btn" onclick="limpiarTodo()">Limpiar todo</button>
+    </div>
+  </div>
+
+  <div id="v1" style="display:none">
+    <div class="stats">
+      <div class="stat"><div class="sl">Total</div><div class="sv" id="st-t" style="color:var(--blue)">0</div></div>
+      <div class="stat"><div class="sl">Hombres</div><div class="sv" id="st-h">0</div></div>
+      <div class="stat"><div class="sl">Mujeres</div><div class="sv" id="st-m">0</div></div>
+      <div class="stat"><div class="sl">Sindicalizados</div><div class="sv" id="st-s" style="color:var(--green)">0</div></div>
+    </div>
+    <div class="card">
+      <div class="stitle">Registro de participantes <span class="badge bi-b" id="ptag">0 registros</span></div>
+      <div class="tw">
+        <table>
+          <thead><tr>
+            <th class="tn">No.</th>
+            <th style="min-width:185px">Nombre completo</th>
+            <th style="min-width:85px">Género</th>
+            <th style="min-width:105px">Cargo</th>
+            <th style="min-width:120px">Escolaridad</th>
+            <th style="min-width:100px">Sindicalizado</th>
+            <th class="td"></th>
+          </tr></thead>
+          <tbody id="ptbody"></tbody>
+        </table>
+      </div>
+      <div id="pempty" style="text-align:center;padding:32px;font-size:13px;color:var(--text3)">Sin participantes — agrega el primero con el botón de abajo</div>
+      <button class="addrow" onclick="addP()">+ Agregar participante</button>
+    </div>
+    <div class="brow">
+      <button class="btn bg-btn" onclick="showTab(0)">← Datos del curso</button>
+      <button class="btn bi" onclick="showTab(2)">Continuar a exportar →</button>
+    </div>
+  </div>
+
+  <div id="v2" style="display:none">
+    <div class="card">
+      <div class="stitle">Resumen del registro</div>
+      <div id="resumen">Completa los pasos anteriores para ver el resumen aquí.</div>
+    </div>
+    <div class="card">
+      <div class="stitle">Descargar datos</div>
+      <div class="nota">El archivo CSV se abre directamente en <strong>Excel</strong> o <strong>Google Sheets</strong>. Cada fila contiene los datos completos del curso más los del participante. Los datos <strong>no se envían a ningún servidor</strong> — todo queda en tu dispositivo.</div>
+      <div class="brow">
+        <button class="btn bs" onclick="exportCSV()">⬇ Descargar CSV</button>
+        <button class="btn bg-btn" onclick="showTab(1)">← Participantes</button>
+        <button class="btn bg-btn" onclick="nuevoRegistro()">Nuevo registro</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>STPS Guanajuato · Programa de Capacitación · Los datos no salen de tu dispositivo</footer>
+</div>
+<div id="toast"></div>
+<script>
+const ESC=['Primaria','Secundaria','Preparatoria','Licenciatura','Posgrado','Alfabetización','Otro'];
+const SIND=['No Aplica','Sí','No'];
+let parts=[],nid=1;
+function showTab(n){
+  [0,1,2].forEach(i=>{document.getElementById('v'+i).style.display='none';const t=document.getElementById('t'+i);t.classList.remove('on','ok');if(i<n)t.classList.add('ok')});
+  document.getElementById('v'+n).style.display='block';document.getElementById('t'+n).classList.add('on');
+  if(n===1)renderP();if(n===2)buildRes();window.scrollTo({top:0,behavior:'smooth'});
+}
+function addP(d){const p=d||{id:nid++,nombre:'',genero:'Hombre',cargo:'No Aplica',escolaridad:'Secundaria',sindicalizado:'No Aplica'};if(!d)parts.push(p);renderP()}
+function renderP(){
+  const body=document.getElementById('ptbody'),empty=document.getElementById('pempty');
+  empty.style.display=parts.length?'none':'block';
+  body.innerHTML=parts.map((p,i)=>`<tr>
+    <td class="tn">${i+1}</td>
+    <td><input value="${x(p.nombre)}" placeholder="Nombre completo" oninput="upd(${p.id},'nombre',this.value)"></td>
+    <td><select onchange="upd(${p.id},'genero',this.value)"><option ${p.genero==='Hombre'?'selected':''}>Hombre</option><option ${p.genero==='Mujer'?'selected':''}>Mujer</option></select></td>
+    <td><input value="${x(p.cargo)}" placeholder="N/A" oninput="upd(${p.id},'cargo',this.value)"></td>
+    <td><select onchange="upd(${p.id},'escolaridad',this.value)">${ESC.map(e=>`<option ${p.escolaridad===e?'selected':''}>${e}</option>`).join('')}</select></td>
+    <td><select onchange="upd(${p.id},'sindicalizado',this.value)">${SIND.map(s=>`<option ${p.sindicalizado===s?'selected':''}>${s}</option>`).join('')}</select></td>
+    <td class="td"><button class="db" onclick="delP(${p.id})">×</button></td>
+  </tr>`).join('');
+  updStats();
+}
+function x(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
+function upd(id,f,v){const p=parts.find(p=>p.id===id);if(p){p[f]=v;updStats()}}
+function delP(id){parts=parts.filter(p=>p.id!==id);renderP()}
+function updStats(){
+  const t=parts.length,h=parts.filter(p=>p.genero==='Hombre').length,s=parts.filter(p=>p.sindicalizado==='Sí').length;
+  document.getElementById('st-t').textContent=t;document.getElementById('st-h').textContent=h;
+  document.getElementById('st-m').textContent=t-h;document.getElementById('st-s').textContent=s;
+  document.getElementById('ptag').textContent=t+(t===1?' registro':' registros');
+}
+function g(id){return(document.getElementById(id)?.value||'').replace(/,/g,'|')}
+function buildRes(){
+  const t=parts.length,h=parts.filter(p=>p.genero==='Hombre').length,s=parts.filter(p=>p.sindicalizado==='Sí').length;
+  document.getElementById('resumen').innerHTML=`<strong>Empresa:</strong> ${g('empresa')||'—'}<br><strong>Domicilio:</strong> ${g('domicilio')||'—'} &nbsp;|&nbsp; <strong>Municipio:</strong> ${g('municipio')||'—'}<br><strong>Curso:</strong> ${g('curso')||'—'}<br><strong>Modalidad:</strong> ${g('modalidad')} &nbsp;|&nbsp; <strong>Categoría:</strong> ${g('categoria')}<br><strong>Fecha:</strong> ${g('fecha')||'—'} &nbsp;|&nbsp; <strong>Horario:</strong> ${g('hora_ini')||'—'} – ${g('hora_fin')||'—'}<br><strong>Instructor:</strong> ${g('instructor')||'—'} &nbsp;|&nbsp; <strong>Responsable:</strong> ${g('responsable')||'—'}<br><hr class="rhr"><strong>Total participantes:</strong> ${t} &nbsp;|&nbsp; <strong>Hombres:</strong> ${h} &nbsp;|&nbsp; <strong>Mujeres:</strong> ${t-h}<br><strong>Sindicalizados:</strong> ${s} &nbsp;|&nbsp; <strong>Con discapacidad:</strong> ${g('discap')} &nbsp;|&nbsp; <strong>Centros:</strong> ${g('centros')}`;
+}
+function exportCSV(){
+  if(!parts.length){toast('Agrega participantes antes de exportar');return}
+  const emp=g('empresa'),mun=g('municipio'),cur=g('curso'),mod=g('modalidad'),cat=g('categoria'),fec=g('fecha'),hi=g('hora_ini'),hf=g('hora_fin'),ins=g('instructor'),res=g('responsable'),cor=g('correo'),cen=g('centros'),dis=g('discap'),com=g('comentarios').replace(/\n/g,' ');
+  const hdr='No.,Nombre,Género,Cargo,Escolaridad,Sindicalizado,Empresa,Municipio,Curso,Modalidad,Categoría,Fecha,Hora Inicio,Hora Término,Instructor,Responsable,Correo,Centros,Con Discapacidad,Comentarios';
+  const rows=parts.map((p,i)=>[i+1,p.nombre,p.genero,p.cargo,p.escolaridad,p.sindicalizado,emp,mun,cur,mod,cat,fec,hi,hf,ins,res,cor,cen,dis,com].map(v=>`"${v}"`).join(','));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+[hdr,...rows].join('\n')],{type:'text/csv;charset=utf-8;'}));
+  a.download=`lista_asistencia_${fec||'sin_fecha'}.csv`;a.click();
+  toast('Archivo descargado correctamente');
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function limpiarTodo(){
+  if(!confirm('¿Limpiar todos los datos?'))return;
+  ['empresa','domicilio','municipio','curso','fecha','instructor','responsable','correo','comentarios'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  parts=[];nid=1;renderP();toast('Datos limpiados');
+}
+function nuevoRegistro(){if(!confirm('¿Iniciar nuevo registro? Se borrarán los datos actuales.'))return;limpiarTodo();showTab(0)}
+function cargarEjemplo(){
+  document.getElementById('empresa').value='Dirección General de Reintegración Social para Adolescentes';
+  document.getElementById('domicilio').value='Carretera León-Cuerámaro';
+  document.getElementById('municipio').value='León';
+  document.getElementById('curso').value='Autoconocimiento, Herramienta para el Desarrollo';
+  document.getElementById('fecha').value='2026-02-10';
+  document.getElementById('hora_ini').value='11:00';
+  document.getElementById('hora_fin').value='13:00';
+  document.getElementById('instructor').value='MDO. Beatriz E. Hernández Hdez.';
+  document.getElementById('responsable').value='Eduardo Arturo Pérez Arcos';
+  document.getElementById('correo').value='eduardo.pereza@guanajuato.gob.mx';
+  parts=[];nid=1;
+  [{nombre:'Cristoper Daniel Bargas Rodríguez',genero:'Hombre',escolaridad:'Preparatoria'},{nombre:'Josue Alexis Medina Zúñiga',genero:'Hombre',escolaridad:'Preparatoria'},{nombre:'Pablo Ezequiel Cuevas Muñoz',genero:'Hombre',escolaridad:'Preparatoria'},{nombre:'Osvaldo Fuentes Raza',genero:'Hombre',escolaridad:'Secundaria'},{nombre:'Jose Eduardo García Belmonte',genero:'Hombre',escolaridad:'Preparatoria'},{nombre:'Jesus Alejandro Silva Blanco',genero:'Hombre',escolaridad:'Secundaria'},{nombre:'Kevin Alexis Hernandez Cortes',genero:'Hombre',escolaridad:'Preparatoria'},{nombre:'Martin Alejandro Del Rio Buenrostro',genero:'Hombre',escolaridad:'Secundaria'}].forEach(p=>parts.push({id:nid++,cargo:'No Aplica',sindicalizado:'No Aplica',...p}));
+  toast('Ejemplo cargado');
+}
+renderP();
+</script>
+</body>
+</html>
